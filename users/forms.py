@@ -1,6 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, EmailField
-from wtforms.validators import DataRequired, Email, Length, EqualTo
+from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
+import re
+
+
+def validate_data(data_field):
+    p = re.compile("regex goes here")
+    if not p.match(data_field.data):
+        raise ValidationError("error message goes here")
 
 
 class RegisterForm(FlaskForm):
@@ -11,3 +18,7 @@ class RegisterForm(FlaskForm):
     password = PasswordField(validators=[Length(min=6, max=12)])
     confirm_password = PasswordField(validators=[EqualTo('password', message='Both password fields must be equal!')])
     submit = SubmitField(validators=[DataRequired()])
+
+ myString = StringField(validators=[])
+
+r'(?=.*\d)(?=.*[a-zA-Z])(?=.*[+*.${}]'
