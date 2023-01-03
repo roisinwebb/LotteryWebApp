@@ -2,12 +2,14 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
+
 # CONFIG
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'LongAndRandomSecretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lottery.db'
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 # initialise database
 db = SQLAlchemy(app)
@@ -31,5 +33,7 @@ app.register_blueprint(users_blueprint)
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(lottery_blueprint)
 
+
 if __name__ == "__main__":
     app.run()
+

@@ -3,26 +3,26 @@ from wtforms import StringField, SubmitField, PasswordField, EmailField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 import re
 
-def character_check(form, field):
-    excluded_chars = "!£$%^&*()-+@~#?"
-    for char in field.data:
-        if char in excluded_chars:
-      raise ValidationError(f"Character{char} is not allowed.")
-
- def validate_data(form, password):
-    p = re.compiler(r'(?=.*\d)(?=.*[a-zA-Z])(?=.*[+!"£$%^&*()-=[{]};:@#~/?.>,<\|])')
-    if p.match(password.data):
-        return
-    raise ValidationError("Must contain at least 1 digit, contain at least 1 lowercase, 1 upper case character  and at least 1 special character")
 
 class RegisterForm(FlaskForm):
+
+    def validate_data(self, password):
+        p = re.compile(r'(?=.*\d)(?=.*[a-zA-Z])(?=.*[+!"£$%^&*();:@#~/?.>,<])')
+        if not p.match(password.data):
+            raise ValidationError("Must contain at least 1 digit, contain at least 1 lowercase, "
+                                  "1 upper case character  and at least 1 special character")
+
+    def character_check(self, field):
+        excluded_chars = "!£$%^&*()-+@~#?"
+        for char in field.data:
+            if char in excluded_chars:
+                raise ValidationError(f"Character {char} is not allowed.")
+
     email = EmailField(validators=[DataRequired(), Email()])
     firstname = StringField(validators=[DataRequired()])
     lastname = StringField(validators=[DataRequired()])
-    phone = StringField(validators=[DataRequired()])
-    password = PasswordField(validators=[Length(min=6, max=12), character_check(), DataRequired()])
-    confirm_password = PasswordField(validators=[EqualTo('password', message='Both password fields must be equal!'), character_check(), DataRequired()])
+    phone = StringField(validators=[DataRequired(), "([0-9]{4})-([0-9]{3})-([0-9]{4})"])
+    password = PasswordField(validators=[DataRequired(), character_check, Length(min=6, max=12)])
+    confirm_password = PasswordField(validators=[DataRequired(), character_check,
+                                                 EqualTo('password', message='Both password fields must be equal!')])
     submit = SubmitField(validators=[DataRequired()])
-
-
-
