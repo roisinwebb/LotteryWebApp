@@ -1,10 +1,9 @@
 # IMPORTS
 import logging
-
 from flask import Blueprint, render_template, request, flash
-
 from app import db
 from models import Draw
+
 
 # CONFIG
 lottery_blueprint = Blueprint('lottery', __name__, template_folder='templates')
@@ -25,7 +24,8 @@ def add_draw():
     submitted_draw.strip()
 
     # create a new draw with the form data.
-    new_draw = Draw(user_id=1, numbers=submitted_draw, master_draw=False, lottery_round=0)  # TODO: update user_id [user_id=1 is a placeholder]
+    new_draw = Draw(user_id=1, numbers=submitted_draw, master_draw=False, lottery_round=0)
+    # TODO: update user_id [user_id=1 is a placeholder]
 
     # add the new draw to the database
     db.session.add(new_draw)
@@ -40,7 +40,8 @@ def add_draw():
 @lottery_blueprint.route('/view_draws', methods=['POST'])
 def view_draws():
     # get all draws that have not been played [played=0]
-    playable_draws = Draw.query.filter_by(been_played=False).all()  # TODO: filter playable draws for current user
+    playable_draws = Draw.query.filter_by(been_played=False).all()
+    # TODO: filter playable draws for current user
 
     # if playable draws exist
     if len(playable_draws) != 0:
@@ -75,5 +76,3 @@ def play_again():
 
     flash("All played draws deleted.")
     return lottery()
-
-
