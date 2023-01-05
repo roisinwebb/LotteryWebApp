@@ -1,6 +1,5 @@
 # IMPORTS
 import os
-
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
@@ -39,7 +38,7 @@ app.register_blueprint(lottery_blueprint)
 
 # error handling
 @app.errorhandler(404)
-def bad_request(error):
+def not_found(error):
     return render_template('404.html'), 404
 
 
@@ -55,6 +54,11 @@ def internal_error(error):
 
 @app.errorhandler(503)
 def service_unavailable(error):
+    return render_template('503.html'), 503
+
+
+@app.errorhandler(400)
+def bad_request(error):
     return render_template('503.html'), 503
 
 

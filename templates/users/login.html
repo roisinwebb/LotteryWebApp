@@ -23,14 +23,19 @@
                     <div class="control">
                         {{ form.pin(class="input", placeholder="PIN") }}
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
+            <div>
              <div>
                 {{ form.recaptcha }}
              </div>
             {{ form.submit(class="button is-info is-centered") }}
+            {% if form %}
+                <form method="POST">
+                    ...
+                </form>
+            {% endif %}
             </div>
         </form>
 {% endblock %}
